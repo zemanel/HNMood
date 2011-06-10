@@ -22,6 +22,7 @@ cache_ts - When the item was last cached
 """
 class NewsItem(db.Model):
     text = db.TextProperty()
+    created_on = db.DateTimeProperty(auto_now_add=True)
     
     #sentimental analisys
     is_sentiment_processed = db.BooleanProperty(default=False)

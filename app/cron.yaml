@@ -1,1 +1,4 @@
 cron:
+#  - description: poll HNSearch
+#    url: /jobs/poll_hnsearch
+#    schedule: every 30 minutes synchronized

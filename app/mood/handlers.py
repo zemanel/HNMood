@@ -3,7 +3,9 @@ import logging
 import urllib
 import urllib2
 from django.utils import simplejson as json
+
 from google.appengine.ext import db
+from google.appengine.api import taskqueue
 
 from tipfy.app import Response
 from tipfy.handler import RequestHandler
@@ -23,7 +25,6 @@ class PollHNSearchJob(RequestHandler):
     def get(self):
         '''Poll HNSearch API for news comments and create tasks for sentiment analysis
         '''
-        #url = "http://api.thriftdb.com/api.hnsearch.com/items/_search?filter[fields][type]=comment&filter[fields][create_ts]=[NOW-30MINUTES%20TO%20NOW]&sortby=create_ts%20desc&limit=100&pretty_print=true"
         url = "http://api.thriftdb.com/api.hnsearch.com/items/_search?" + urllib.urlencode({
             'filter[fields][type]' : 'comment',
             'filter[fields][create_ts]' : '[NOW-30MINUTES TO NOW]',
@@ -44,41 +45,56 @@ class PollHNSearchJob(RequestHandler):
         '''stores news items in the datastore
         '''
         for item in results:
-            #logger.debug(item)
-            newsitem = NewsItem.get_or_insert(key_name=str(item['item']['id']), text=item['item']['text'])
-            #TODO: add task
+            key = str(item['item']['id'])
+            NewsItem.get_or_insert(key_name=key, text=item['item']['text'])
+            logger.info("Stored item %s" % key)
 
-            #logger.info(newsitem)
-#            newsitem.sentiment_type = 'positive'
-#            newsitem.sentiment_score = float('-0.100542')
+
+class QueueAlchemyTasksJob(RequestHandler):
+    def get(self):
+        '''
+        '''
+        queue = taskqueue.Queue()
+        items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).order('-created_on').fetch(limit=100)
+        for key in items:
+            keyname = key.name()
+            task = taskqueue.Task(params={'itemid':keyname}, name="sentimental-analisys-%s"%keyname, method="GET", url="/tasks/poll_alchemyapi")
+            queue.add(task)
+            #logger.debug(i)
+        return Response('OK', status=200)
 
 class PollAlchemyTask(RequestHandler):
-    '''
-    Poll Alchemy API Sentimental Analisys for processing a news comment
+    '''Poll Alchemy API Sentimental Analisys for processing a news comment item
     '''
     def get(self):
         api_key = self.app.config['alchemyapi']['API_KEY']
         itemid = self.request.args.get('itemid', None)
         newsitem = NewsItem.get_by_key_name(itemid)
-        url = "http://access.alchemyapi.com/calls/text/TextGetTextSentiment"
-        try:
-            result = urllib2.urlopen(url, urllib.urlencode({
-            'apikey' : api_key,
-            'outputMode' : 'json',
-            'text' : newsitem.text
-            }))
-            content = json.loads(result.read())
-            logger.debug(content)
-            if content['status']=='OK':
-                newsitem.sentiment_type = content['docSentiment']['type']
-                newsitem.sentiment_score =  float(content['docSentiment']['score'])
-                newsitem.put()
-            else:
-                raise Exception(content['statusInfo'])
-        except Exception, e:
-            logger.exception(e)
-            return Response('Application error', status=500)
-        return Response('OK', status=200)
+        if newsitem is not None:
+            url = "http://access.alchemyapi.com/calls/text/TextGetTextSentiment"
+            try:
+                result = urllib2.urlopen(url, urllib.urlencode({
+                'apikey' : api_key,
+                'outputMode' : 'json',
+                'text' : newsitem.text
+                }))
+                content = json.loads(result.read())
+                logger.debug(content)
+                if content['status']=='OK':
+                    newsitem.sentiment_type = content['docSentiment']['type']
+                    if content['docSentiment']['type'] != 'neutral':
+                        newsitem.sentiment_score = float(content['docSentiment']['score'])
+                    else:
+                        newsitem.sentiment_score = .0
+                    newsitem.is_sentiment_processed = True
+                    newsitem.put()
+                else:
+                    raise Exception(content['statusInfo'])
+            except Exception, e:
+                logger.exception(e)
+                return Response('Application error', status=500)
+            return Response('OK', status=200)
+        return Response('Item %s not found'%itemid, status=404)
 
 
 

@@ -8,6 +8,8 @@ rules = [
 
     # cron jobs
     Rule('/jobs/poll_hnsearch', name='job-poll-hnsearch', handler='mood.handlers.PollHNSearchJob'),
+    Rule('/jobs/queue_alchemy_tasks', name='job-poll-hnsearch', handler='mood.handlers.QueueAlchemyTasksJob'),
+    
     
     # tasks
     Rule('/tasks/poll_alchemyapi', name='task-poll-hnsearch', handler='mood.handlers.PollAlchemyTask'),
