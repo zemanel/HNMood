@@ -1,4 +1,8 @@
 cron:
-#  - description: poll HNSearch
+#  - description: Poll HNSearch
 #    url: /jobs/poll_hnsearch
+#    schedule: every 30 minutes synchronized
+#    
+#    - description: Queue AlchemyAPI analysis requests as tasks
+#    url: /jobs/queue_alchemy_tasks
 #    schedule: every 30 minutes synchronized

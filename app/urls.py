@@ -5,6 +5,7 @@ from tipfy.routing import Rule
 rules = [
     Rule('/', name='home', handler='mood.handlers.HomePage'),
     #Rule('/pretty', name='hello-world-pretty', handler='hello_world.handlers.PrettyHelloWorldHandler'),
+    Rule('/item/<int:itemid>', name='newsitem-detail', handler='mood.handlers.NewsItemDetail'),
 
     # cron jobs
     Rule('/jobs/poll_hnsearch', name='job-poll-hnsearch', handler='mood.handlers.PollHNSearchJob'),

@@ -22,6 +22,21 @@ class HomePage(RequestHandler, Jinja2Mixin):
         }
         return self.render_response('home.html', **context)
 
+class NewsItemDetail(RequestHandler, Jinja2Mixin):
+    def get(self, itemid):
+        '''Returns the json for a news item comment 
+        '''
+        #itemid = self.request.args.get('itemid', None)
+        itemid = str(itemid)
+        newsitem = NewsItem.get_by_key_name(itemid) or self.abort(404)
+        return Response(json.dumps({
+            'itemid': itemid,
+            'is_sentiment_processed' : newsitem.is_sentiment_processed,
+            'sentiment_type': newsitem.sentiment_type,
+            'sentiment_score': newsitem.sentiment_score,
+            '':'',
+        }, indent=2))
+
 class PollHNSearchJob(RequestHandler):
     def get(self):
         '''Poll HNSearch API for news comments and create tasks for sentiment analysis
