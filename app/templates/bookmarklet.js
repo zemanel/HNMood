@@ -1,4 +1,5 @@
 (function(){
+  var baseurl = '{{baseurl}}';
   function loadDojo(){
     _s=document.createElement('SCRIPT');
     _s.type='text/javascript';

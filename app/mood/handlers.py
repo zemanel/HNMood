@@ -17,10 +17,16 @@ from models import NewsItem
 logger = logging.getLogger(__name__)
 
 class HomePage(RequestHandler, Jinja2Mixin):
+    def get(self): 
+        return self.render_response('home.html', **{
+            'bookmarklet_src' :  self.url_for('bookmarklet-js', _full=True)
+        })
+
+class BookmarkletPage(RequestHandler, Jinja2Mixin):
     def get(self):
-        context = {
-        }
-        return self.render_response('home.html', **context)
+        return self.render_response('bookmarklet.js',** {
+            'baseurl' : self.url_for('home', _full=True)
+        })
 
 class NewsItemDetail(RequestHandler, Jinja2Mixin):
     def get(self, itemid):
@@ -29,6 +35,8 @@ class NewsItemDetail(RequestHandler, Jinja2Mixin):
         #itemid = self.request.args.get('itemid', None)
         itemid = str(itemid)
         newsitem = NewsItem.get_by_key_name(itemid) or self.abort(404)
+        #logger.debug(self.app.config)
+        #logger.debug(self.url_for('home', _full=True))
         return Response(json.dumps({
             'itemid': itemid,
             'is_sentiment_processed' : newsitem.is_sentiment_processed,

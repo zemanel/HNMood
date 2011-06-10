@@ -13,6 +13,6 @@
     </head>
     <body>
         <h1>Drag the bookmarklet</h1>
-        <a href="javascript:(function(){_s=document.createElement('SCRIPT');_s.type='text/javascript';_s.src='http://localhost:8080/static/js/bm.js?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(_s);})();">bookmark</a>
+        <a href="javascript:(function(){_s=document.createElement('SCRIPT');_s.type='text/javascript';_s.src='{{bookmarklet_src}}?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(_s);})();">bookmark</a>
     </body>
 </html>
