@@ -24,6 +24,15 @@ error_handlers:
   file: templates/error_handlers/timeout.html
 
 handlers:
+  
+- url: /jobs/.*
+  script: main.py
+  login: admin
+
+- url: /tasks/.*
+  script: main.py
+  login: admin
+  
 - url: /favicon\.ico
   static_files: static/favicon.ico
   upload: static/favicon.ico

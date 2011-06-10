@@ -1,4 +1,34 @@
+Items - http://api.thriftdb.com/api.hnsearch.com/items
+id - The item's unique integer id (not searchable)
+parent_id - The parent comment's id
+parent_sigid - The parent comment's signed id
+points - The number of points
+username - The submitter's username
+type - Item type (submission|comment)
+url - A submission url
+domain - A submission url's domain name
+title - A submission title
+num_comments - Number of submission comments
+text - The submission/comment content
+discussion{} - A comment's parent discussion
+id - The discussion's item id (not searchable)
+sigid - The discussion's signed id
+title - The discussion's item title (not searchable)
+create_ts - When the item was created
+cache_ts - When the item was last cached
 
+
+AlchemyAPI
+--------
+
+
+
+Appengine queues:
+-----------------
+http://www.youtube.com/watch?v=o3TuRs9ANhs&feature=player_embedded
+
+
+http://docs.python.org/release/2.6/howto/urllib2.html
 
 javascript:(function(){
   _s=document.createElement('SCRIPT');
@@ -28,17 +58,32 @@ else:
   
 http://www.thriftdb.com/documentation/rest-api/search-api
   
-facebook&weights[title]=1.1&weights[text]=0.7&weights[domain]=2.0&weights[username]=0.1&weights[type]=0.0&boosts[fields][points]=0.15&boosts[fields][num_comments]=0.15&boosts[functions][pow(2,div(div(ms(create_ts,NOW),3600000),72))]=200.0&pretty_print=true
+http://api.thriftdb.com/api.hnsearch.com/items/_search?q=facebook&weights[title]=1.1&weights[text]=0.7&weights[domain]=2.0&weights[username]=0.1&weights[type]=0.0&boosts[fields][points]=0.15&boosts[fields][num_comments]=0.15&boosts[functions][pow(2,div(div(ms(create_ts,NOW),3600000),72))]=200.0&pretty_print=true
 
-http://api.thriftdb.com/test_bucket/cars/_search?filter[queries][]=color%3Ablack+OR+color%3Ared&filter[queries][]=year%3A%5B1970+TO+1980%5D&pretty_print=true
+
+* Items from last day
+http://api.thriftdb.com/api.hnsearch.com/items/_search?filter[fields][create_ts]=[NOW-24HOURS%20TO%20NOW]&sortby=create_ts%20desc
+
+* Items from last hour
+http://api.thriftdb.com/api.hnsearch.com/items/_search?filter[fields][create_ts]=[NOW-1HOUR%20TO%20NOW]&sortby=create_ts%20desc&pretty_print=true
+
+
+* Items from 30 minutes
+http://api.thriftdb.com/api.hnsearch.com/items/_search?filter[fields][create_ts]=[NOW-30MINUTES%20TO%20NOW]&sortby=create_ts%20desc&limit=100&pretty_print=true
+
 
  "cache_ts": "2011-06-08T14:50:32Z",
 year:[1970+TO+1980]
+http://lucene.apache.org/java/2_9_1/queryparsersyntax.html#Range Searches
+mod_date:[20020101 TO 20030101]
 
+
+
+
+"type": "",
 
 http://api.thriftdb.com/api.hnsearch.com/items/_search?
 q=
+sortby=
 filter[queries][]=cache_ts:[*+TO+]
 
-http://lucene.apache.org/java/2_9_1/queryparsersyntax.html#Range Searches
-mod_date:[20020101 TO 20030101]

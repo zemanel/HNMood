@@ -20,13 +20,21 @@ create_ts - When the item was created
 cache_ts - When the item was last cached
 
 """
+class NewsItem(db.Model):
+    text = db.TextProperty()
+    
+    #sentimental analisys
+    is_sentiment_processed = db.BooleanProperty(default=False)
+    sentiment_type = db.StringProperty()
+    sentiment_score = db.FloatProperty()
 
-class News(db.Model):
-    title = db.StringProperty(required=True)
-    description = db.TextProperty()
-    time = db.DateTimeProperty()
-    location = db.TextProperty()
-    creator = db.UserProperty()
-    edit_link = db.TextProperty()
-    gcal_event_link = db.TextProperty()
-    gcal_event_xml = db.TextProperty()
+    #id: will use key of db model
+    #points = db.IntegerProperty()
+    #parent_id: will use parent of db model instance
+    #username = db.StringProperty()
+    #type = db.StringProperty()
+    #url = db.LinkProperty()
+    #domain = db.StringProperty()
+    #title = db.StringProperty()
+    #num_comments = db.IntegerProperty()
+    #created_on = db.DateTimeProperty()
