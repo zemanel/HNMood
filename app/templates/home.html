@@ -1,18 +1,24 @@
-<html>
-    <head>
-        <title>HNMood</title>
-        <style type="text/css">
-            h1 {
-                color: #0099FF;
-                font-family: 'trebuchet ms', trebuchet, arial, sans-serif;
-                font-size: 72px;
-                text-align: center;
-                margin-top: 24px;
-            }
-        </style>
-    </head>
-    <body>
+<!doctype html>
+<html lang="en">
+<head>
+    <title>HN mood</title>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="stylesheet" href="/static/css/screen.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="/static/css/print.css" type="text/css" media="print" />
+    <!--[if lt IE 8]>
+      <link rel="stylesheet" href="/static/css/ie.css" type="text/css" media="screen, projection">
+    <![endif]-->
+    <link rel="stylesheet" href="/static/css/site.css" type="text/css" media="screen, projection" />
+</head>
+
+<body>
+    <div class="container">
         <h1>Drag the bookmarklet</h1>
         <a href="javascript:(function(){_s=document.createElement('SCRIPT');_s.type='text/javascript';_s.src='{{bookmarklet_src}}?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(_s);})();">bookmark</a>
-    </body>
+    </div>
+</body>
 </html>
