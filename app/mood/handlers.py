@@ -2,6 +2,7 @@
 import logging
 import urllib
 import urllib2
+import codecs
 from django.utils import simplejson as json
 
 from google.appengine.ext import db
@@ -34,7 +35,7 @@ class PollHNSearchJob(RequestHandler):
         })
         try:
             result = urllib2.urlopen(url)
-            content = json.loads(result.read())
+            content = json.loads(result.read(), encoding="utf-8")
             self._parse_results(content['results'])
         except Exception, e:
             logger.exception(e)
@@ -49,7 +50,6 @@ class PollHNSearchJob(RequestHandler):
             NewsItem.get_or_insert(key_name=key, text=item['item']['text'])
             logger.info("Stored item %s" % key)
 
-
 class QueueAlchemyTasksJob(RequestHandler):
     def get(self):
         '''
@@ -58,9 +58,10 @@ class QueueAlchemyTasksJob(RequestHandler):
         items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).order('-created_on').fetch(limit=100)
         for key in items:
             keyname = key.name()
-            task = taskqueue.Task(params={'itemid':keyname}, name="sentimental-analisys-%s"%keyname, method="GET", url="/tasks/poll_alchemyapi")
+            taskname = "sentimental-analisys-%s"%keyname
+            task = taskqueue.Task(params={'itemid':keyname}, name=taskname, method="GET", url="/tasks/poll_alchemyapi")
             queue.add(task)
-            #logger.debug(i)
+            logger.info("Created task %s" % taskname)
         return Response('OK', status=200)
 
 class PollAlchemyTask(RequestHandler):
@@ -76,10 +77,10 @@ class PollAlchemyTask(RequestHandler):
                 result = urllib2.urlopen(url, urllib.urlencode({
                 'apikey' : api_key,
                 'outputMode' : 'json',
-                'text' : newsitem.text
+                'text' :  unicode(newsitem.text).encode('utf-8')
                 }))
                 content = json.loads(result.read())
-                logger.debug(content)
+                #logger.debug(content)
                 if content['status']=='OK':
                     newsitem.sentiment_type = content['docSentiment']['type']
                     if content['docSentiment']['type'] != 'neutral':
@@ -88,6 +89,7 @@ class PollAlchemyTask(RequestHandler):
                         newsitem.sentiment_score = .0
                     newsitem.is_sentiment_processed = True
                     newsitem.put()
+                    logger.info("Analyzed item %s" %itemid)
                 else:
                     raise Exception(content['statusInfo'])
             except Exception, e:
