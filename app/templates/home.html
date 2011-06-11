@@ -25,14 +25,7 @@
         <h2>Bookmarklet</h2>
         <p> Drag the bookmaklet bellow into your browser link bar</p>
         <p><a href="javascript:(function(){_s=document.createElement('SCRIPT');_s.type='text/javascript';_s.src='{{bookmarklet_src}}?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(_s);})();">bookmark</a></p>
-        <!-- 
-        <h2>Icons:</h2>
-        <ul style="list-style: none;">
-            {% for k, icon in icons.iteritems() %}
-            <li><img src="{{baseurl}}{{icon.src}}" alt="{{icon.description}}" width="{{icon.width}}" height="{{icon.height}}"> {{icon.description}}</li>
-            {% endfor %}
-        </ul>
-         -->
+
     </div>
 </body>
 </html>

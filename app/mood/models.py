@@ -1,6 +1,7 @@
 '''
 '''
 from google.appengine.ext import db
+from google.appengine.ext.db import _SELF_REFERENCE
 
 """
 id - The item's unique integer id
@@ -21,21 +22,23 @@ cache_ts - When the item was last cached
 
 """
 class NewsItem(db.Model):
-    text = db.TextProperty()
-    created_on = db.DateTimeProperty(auto_now_add=True)
-    
-    #sentimental analisys
-    is_sentiment_processed = db.BooleanProperty(default=False)
-    sentiment_type = db.StringProperty()
-    sentiment_score = db.FloatProperty()
+  #id: will use key of db model
 
-    #id: will use key of db model
-    #points = db.IntegerProperty()
-    #parent_id: will use parent of db model instance
-    #username = db.StringProperty()
-    #type = db.StringProperty()
-    #url = db.LinkProperty()
-    #domain = db.StringProperty()
-    #title = db.StringProperty()
-    #num_comments = db.IntegerProperty()
-    #created_on = db.DateTimeProperty()
+  text = db.TextProperty()
+  create_ts = db.DateTimeProperty()
+  type = db.StringProperty()
+  username = db.StringProperty()
+  parent_id = db.IntegerProperty() # parent_id - The parent item's id
+
+  #sentimental analisys
+  is_sentiment_processed = db.BooleanProperty(default=False)
+  sentiment_type = db.StringProperty()
+  sentiment_score = db.FloatProperty()
+
+  #points = db.IntegerProperty()
+  #parent_id: will use parent of db model instance
+  #url = db.LinkProperty()
+  #domain = db.StringProperty()
+  #title = db.StringProperty()
+  #num_comments = db.IntegerProperty()
+  #created_on = db.DateTimeProperty()

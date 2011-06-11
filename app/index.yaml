@@ -12,6 +12,8 @@ indexes:
 
 - kind: NewsItem
   properties:
+  - name: username
+  - name: type
   - name: is_sentiment_processed
   - name: created_on
     direction: desc

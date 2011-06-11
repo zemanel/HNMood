@@ -140,7 +140,7 @@ def convert_IntegerProperty(model, prop, kwargs):
 
 def convert_FloatProperty(model, prop, kwargs):
     """Returns a form field for a ``db.FloatProperty``."""
-    return f.FloatField(kwargs)
+    return f.FloatField(**kwargs)
 
 
 def convert_DateTimeProperty(model, prop, kwargs):
@@ -148,7 +148,7 @@ def convert_DateTimeProperty(model, prop, kwargs):
     if prop.auto_now or prop.auto_now_add:
         return None
 
-    return f.DateTimeField(format='%Y-%m-%d %H-%M-%S', **kwargs)
+    return f.DateTimeField(format='%Y-%m-%d %H:%M:%S', **kwargs)
 
 
 def convert_DateProperty(model, prop, kwargs):
@@ -164,7 +164,7 @@ def convert_TimeProperty(model, prop, kwargs):
     if prop.auto_now or prop.auto_now_add:
         return None
 
-    return f.DateTimeField(format='%H-%M-%S', **kwargs)
+    return f.DateTimeField(format='%H:%M:%S', **kwargs)
 
 
 def convert_ListProperty(model, prop, kwargs):

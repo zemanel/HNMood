@@ -4,7 +4,7 @@ runtime: python
 api_version: 1
 
 builtins:
-- appstats: on
+- appstats: off
 - datastore_admin: on
 - remote_api: on
 
