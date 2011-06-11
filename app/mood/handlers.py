@@ -54,14 +54,17 @@ class HomePage(RequestHandler, Jinja2Mixin):
         return self.render_response('home.html', **{
             'baseurl' : self.url_for('home', _full=True),
             'bookmarklet_src' :  self.url_for('bookmarklet-js', _full=True),
-            'icons' : MOOD_ICONS
+            #'icons' : MOOD_ICONS
         })
 
 class BookmarkletPage(RequestHandler, Jinja2Mixin):
     def get(self):
+#        js_icons = {}
+#        for k, icon in MOOD_ICONS.iteritems():
+#            js_icons[k] = '<img src="%s" alt="%s" width="%s" height="%s">' % (baseurl+icon['src'], icon['description'], icon['width'], icon['height'])
         return self.render_response('bookmarklet.js',** {
             'baseurl' : self.url_for('home', _full=True),
-            'icons' : json.dumps(self.app.config['mood.icons'])
+            #'icons' : json.dumps(MOOD_ICONS, indent=2)
         })
 
 class NewsItemDetail(RequestHandler, Jinja2Mixin):
@@ -69,17 +72,22 @@ class NewsItemDetail(RequestHandler, Jinja2Mixin):
         '''Returns the json for a news item comment 
         '''
         #itemid = self.request.args.get('itemid', None)
+        jsoncallback = self.request.args.get('jsoncallback', None)
         itemid = str(itemid)
         newsitem = NewsItem.get_by_key_name(itemid) or self.abort(404)
         #logger.debug(self.app.config)
         #logger.debug(self.url_for('home', _full=True))
-        return Response(json.dumps({
+        json_response = json.dumps({
             'itemid': itemid,
             'is_sentiment_processed' : newsitem.is_sentiment_processed,
             'sentiment_type': newsitem.sentiment_type,
             'sentiment_score': newsitem.sentiment_score,
             '':'',
-        }, indent=2))
+        }, indent=2)
+        if jsoncallback is None:
+            return Response(json_response)
+        else:
+            return Response("%s(%s)" % (jsoncallback,json_response))
 
 class PollHNSearchJob(RequestHandler):
     def get(self):
