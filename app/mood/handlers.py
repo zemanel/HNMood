@@ -16,16 +16,52 @@ from models import NewsItem
 
 logger = logging.getLogger(__name__)
 
+MOOD_ICONS = {
+    'sentiment_positive': {
+        'description': 'Positive sentiment',
+        'src': 'static/img/silk_icons/emoticon_happy.png',
+        'width' : 16,
+        'height' : 16,
+        'alt': 'Positive',
+    },
+    'sentiment_negative': {
+        'description': 'Negative sentiment',
+        'src': 'static/img/silk_icons/emoticon_unhappy.png',
+        'width' : 16,
+        'height' : 16,
+        'alt': 'Negative',
+    },
+    'sentiment_neutral': {
+        'description': 'Neutral sentiment',
+        'src': 'static/img/silk_icons/emoticon_waii.png',
+        'width' : 16,
+        'height' : 16,
+        'alt': 'Neutral',
+    },
+    'sentiment_unavailable': {
+        'description': 'Sentiment analisys unavailable',
+        'src': 'static/img/silk_icons/help.png',
+        'width' : 16,
+        'height' : 16,
+        'alt': 'Unavailable',
+    },    
+}
+
+#for k, v in last.iteritems()
+
 class HomePage(RequestHandler, Jinja2Mixin):
     def get(self): 
         return self.render_response('home.html', **{
-            'bookmarklet_src' :  self.url_for('bookmarklet-js', _full=True)
+            'baseurl' : self.url_for('home', _full=True),
+            'bookmarklet_src' :  self.url_for('bookmarklet-js', _full=True),
+            'icons' : MOOD_ICONS
         })
 
 class BookmarkletPage(RequestHandler, Jinja2Mixin):
     def get(self):
         return self.render_response('bookmarklet.js',** {
-            'baseurl' : self.url_for('home', _full=True)
+            'baseurl' : self.url_for('home', _full=True),
+            'icons' : json.dumps(self.app.config['mood.icons'])
         })
 
 class NewsItemDetail(RequestHandler, Jinja2Mixin):
@@ -91,7 +127,7 @@ class PollAlchemyTask(RequestHandler):
     '''Poll Alchemy API Sentimental Analisys for processing a news comment item
     '''
     def get(self):
-        api_key = self.app.config['alchemyapi']['API_KEY']
+        api_key = self.app.config['mood.alchemyapi']['API_KEY']
         itemid = self.request.args.get('itemid', None)
         newsitem = NewsItem.get_by_key_name(itemid)
         if newsitem is not None:
