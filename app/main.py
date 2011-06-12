@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 """WSGI app setup."""
 import os
-from google.appengine.dist import use_library
 import set_sys_path
-
 from tipfy.app import App
 from config import config
 from urls import rules
 
-use_library('django', '1.2')
+
 
 def enable_appstats(app):
     """Enables appstats middleware."""

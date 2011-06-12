@@ -23,3 +23,10 @@ indexes:
   - name: is_sentiment_processed
   - name: create_ts
     direction: desc
+
+- kind: NewsItem
+  properties:
+  - name: is_sentiment_processed
+  - name: is_sentiment_queued
+  - name: create_ts
+    direction: desc

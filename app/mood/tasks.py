@@ -36,7 +36,7 @@ class PollHNSearchTask(RequestHandler):
     for item in results:
       keyname = str(item['item']['id'])
       newsitem = NewsItem.get_by_key_name(keyname)
-      if newsitem is not None:
+      if newsitem is None:
         props = {
           'text' : item['item']['text'],
           'username' : item['item']['username'],
@@ -45,8 +45,10 @@ class PollHNSearchTask(RequestHandler):
           'parent_id' : int(item['item']['parent_id'])
         }
         newsitem = NewsItem(key_name=keyname, **props)
-        logger.debug("Created NewsItem %s" % keyname)
-      logger.debug("NewsItem %s already exists" % keyname)
+        newsitem.put()
+        logger.info("Created NewsItem %s" % keyname)
+      else:
+        logger.info("NewsItem %s already exists" % keyname)
 
 class PollAlchemyTask(RequestHandler):
   '''Poll Alchemy API Sentimental Analisys for processing a news comment item
@@ -68,6 +70,7 @@ class PollAlchemyTask(RequestHandler):
           else:
             newsitem.sentiment_score = .0
           newsitem.is_sentiment_processed = True
+          newsitem.is_sentiment_queued = False
           newsitem.put()
           logger.info("Analyzed item %s" % itemid)
         else:

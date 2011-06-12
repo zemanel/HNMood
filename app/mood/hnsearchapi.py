@@ -22,7 +22,7 @@ class HNSearchAPI(object):
       'pretty_print': pretty_print
     }
     url = self.baseurl + urllib.urlencode(params)
-    logger.debug("Fetching url %s" % url)
+    logger.info("Fetching url %s" % url)
     result = urllib2.urlopen(url)
     return result.read()
     

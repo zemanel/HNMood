@@ -31,6 +31,7 @@ class NewsItem(db.Model):
 
   #sentimental analisys
   is_sentiment_processed = db.BooleanProperty(default=False)
+  is_sentiment_queued = db.BooleanProperty(default=False)
   sentiment_type = db.StringProperty()
   sentiment_score = db.FloatProperty()
 

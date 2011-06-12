@@ -24,6 +24,7 @@ class QueueHNSearchJob(RequestHandler):
     try:
       #result = api.search(created_from='NOW-30MINUTES', created_to='NOW', limit=100)
       created_from = 'NOW-30MINUTES'
+      created_from = 'NOW-5HOURS'
       created_to = 'NOW'
       result = api.search(created_from=created_from, created_to=created_to, start=0, limit=0)
       content = json.loads(result, encoding="utf-8")
@@ -46,17 +47,21 @@ class QueueHNSearchJob(RequestHandler):
     return Response('OK', status=200)
 
 
-
 class QueueAlchemyTasksJob(RequestHandler):
   def get(self):
     '''Fills a GAP task queue with items sentiment analisys
     '''
     queue = taskqueue.Queue(name='alchemyapi')
-    items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).order('-create_ts').fetch(limit=100)
+    items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).filter("is_sentiment_queued", False).order('-create_ts').fetch(limit=100)
     for key in items:
       keyname = key.name()
+      # queue sentiment analisys task
       taskname = "sentimental-analisys-%s" % keyname
       task = taskqueue.Task(params={'itemid':keyname}, name=taskname, method="GET", url="/tasks/poll_alchemyapi")
       queue.add(task)
       logger.info("Created task %s" % taskname)
+      # set item as queue
+      newsitem = NewsItem.get_by_key_name(keyname)
+      newsitem.is_sentiment_queued = True
+      newsitem.put()
     return Response('OK', status=200)
