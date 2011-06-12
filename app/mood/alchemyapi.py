@@ -14,7 +14,7 @@ class AlchemyAPI(object):
     '''Performs a request
     '''
     result = urllib2.urlopen(self.baseurl, urllib.urlencode({
-      'apikey' : self.api_key,
+      'apikey' : self.apikey,
       'outputMode' : outputMode,
       'text' :  text
     }))

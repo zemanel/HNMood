@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 import logging
-import urllib
-import urllib2
-import datetime
-
 from django.utils import simplejson as json
 from tipfy.app import Response
 from tipfy.handler import RequestHandler
@@ -22,16 +18,15 @@ class QueueHNSearchJob(RequestHandler):
     api = HNSearchAPI()
     limit=100
     try:
-      #result = api.search(created_from='NOW-30MINUTES', created_to='NOW', limit=100)
       created_from = 'NOW-30MINUTES'
-      created_from = 'NOW-5HOURS'
       created_to = 'NOW'
+      logging.info("Polling HNSearchAPI from %s to %s " % (created_from, created_to))
       result = api.search(created_from=created_from, created_to=created_to, start=0, limit=0)
       content = json.loads(result, encoding="utf-8")
       hits = int(content['hits'])
       logger.info("Got %s hnsearch hits" % content['hits'])
       for start in xrange(0, hits, limit):
-        taskname = "poll-hnsearch-%s" % (start)
+        taskname = "poll-hnsearch-%s-%s" % (created_from, created_to)
         params = {
           'created_from' : created_from,
           'created_to' : created_to,

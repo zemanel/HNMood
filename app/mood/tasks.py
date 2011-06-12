@@ -61,7 +61,7 @@ class PollAlchemyTask(RequestHandler):
       try:
         api = AlchemyAPI(apikey=apikey)
         result = api.request(unicode(newsitem.text).encode('utf-8'))
-        content = json.loads(result.read())
+        content = json.loads(result)
         #logger.debug(content)
         if content['status'] == 'OK':
           newsitem.sentiment_type = content['docSentiment']['type']
