@@ -1,4 +1,9 @@
 queue:
-# Change the refresh rate of the default queue from 5/s to 1/s
 - name: default
+  rate: 5/s
+
+- name: hnsearchapi
+  rate: 5/s
+  
+- name: alchemyapi
   rate: 5/s

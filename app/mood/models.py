@@ -1,7 +1,6 @@
 '''
 '''
 from google.appengine.ext import db
-from google.appengine.ext.db import _SELF_REFERENCE
 
 """
 id - The item's unique integer id
@@ -15,8 +14,8 @@ title - A submission title
 num_comments - Number of submission comments
 text - The submission/comment content
 discussion{} - A comment's parent discussion
-id - The discussion's item id
-title - The discussion's item title
+  id - The discussion's item id
+  title - The discussion's item title
 create_ts - When the item was created
 cache_ts - When the item was last cached
 
