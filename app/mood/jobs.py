@@ -18,13 +18,17 @@ class QueueHNSearchJob(RequestHandler):
     api = HNSearchAPI()
     limit=100
     try:
-      created_from = 'NOW-30MINUTES'
+      created_from = 'NOW-35MINUTES'
+      #created_from = 'NOW-3HOURS'
       created_to = 'NOW'
       logging.info("Polling HNSearchAPI from %s to %s " % (created_from, created_to))
       result = api.search(created_from=created_from, created_to=created_to, start=0, limit=0)
       content = json.loads(result, encoding="utf-8")
       hits = int(content['hits'])
       logger.info("Got %s hnsearch hits" % content['hits'])
+      if hits > 1000:
+        hits = 1000
+        logger.warn("Number of hits is over limit. Trimming to 1000")
       for start in xrange(0, hits, limit):
         taskname = "poll-hnsearch-%s-%s" % (created_from, created_to)
         params = {

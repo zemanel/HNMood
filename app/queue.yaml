@@ -6,4 +6,4 @@ queue:
   rate: 5/s
   
 - name: alchemyapi
-  rate: 5/s
+  rate: 1000/d
