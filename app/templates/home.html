@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>HN mood</title>
+    <title>HNMood</title>
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -20,12 +20,26 @@
         <h1>HackerNews comment sentimental analisys</h1>
 
         <h2>About</h2>
-        <p></p>
+        
+        <p>HNMood</p>
         
         <h2>Bookmarklet</h2>
         <p> Drag the bookmaklet bellow into your browser link bar</p>
-        <p><a href="javascript:(function(){_s=document.createElement('SCRIPT');_s.type='text/javascript';_s.src='{{bookmarklet_src}}?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(_s);})();">HackerNews Analyzer</a></p>
+        <p><a href="javascript:(function(){_s=document.createElement('SCRIPT');_s.type='text/javascript';_s.src='{{bookmarklet_src}}?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(_s);})();">HN Comment Sentiment Analyzer</a></p>
 
+        <h3>Screenshot</h3>
+        <p><img src="/static/img/screenshot.png" width="712" height="697"></p>
+        
+
+        
+        <h3>Powered by</h3>
+        <ul>
+            <li><a href="http://www.alchemyapi.com">AlchemyPI</a></li>
+            <li><a href="http://www.hnsearch.com/api">HNSearch API</a></li>
+            <li><a href="http://appengine.google.com">Google AppEngine</a></li>
+            <li><a href="http://www.tipfy.org">Tipfy</a></li>
+        </ul>
+        
     </div>
 </body>
 </html>

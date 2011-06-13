@@ -1,7 +1,5 @@
 (function(){
   var baseurl = '{{baseurl}}';
-//  var icons = {{icons|safe}};
-//  console.debug(icons.sentiment_negative)
 
   function loadDojo(){
     _s=document.createElement('SCRIPT');
@@ -10,20 +8,29 @@
     document.getElementsByTagName('head')[0].appendChild(_s);
   }
   
+  // Load Dojo
+  loadDojo();
+
   function getCommentAnalisysCallback(linkNode, newsitem) {
     console.log(linkNode, newsitem);
     if (newsitem.is_sentiment_processed===true) {
       var newDomNode = document.createElement('SPAN');
+      var color = null;
       newDomNode.id = "hnmood_"+newsitem.id;
-      newDomNode.innerHTML = '| Sentiment score:'+newsitem.sentiment_score+' ('+newsitem.sentiment_type+')';
+      if (newsitem.sentiment_type==='positive') {
+        color = 'green';
+      } else if (newsitem.sentiment_type==='negative') {
+        color = 'red';
+      } else {
+        color = 'gray';
+      }
+      newDomNode.innerHTML = '| <span style="color:'+color+';"> Sentiment score:'+newsitem.sentiment_score+' ('+newsitem.sentiment_type+') </span>';
       dojo.place(newDomNode, linkNode, 'after');      
     }
   }
   
   function processComments() {
-    // http://news.ycombinator.com/item?id=2634985
     var comments = dojo.query("span.comhead");
-    // comments.style("color","red");
     var links = null;
     var newsitemId = null;
     var newDomNodeId = null;
@@ -48,23 +55,8 @@
           }
         });
       }
-      //console.debug();
-    });
-    
-    
-    
-    //links.style("color","red");
-    links.forEach(function(node, index, array){
-      //console.debug(node, index, array)
-      var itemid = node.href.split('=')[1];
-      //console.log(itemid);
-
-    });
-    
+    });    
   }
-  
-  // Load Dojo
-  loadDojo();
 
   // wait for dojo loading and execute code
   window.setTimeout(function(){
