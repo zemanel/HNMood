@@ -3,7 +3,7 @@ queue:
   rate: 5/s
 
 - name: hnsearchapi
-  rate: 5/s
+  rate: 1/m
   
 - name: alchemyapi
   rate: 1000/d
