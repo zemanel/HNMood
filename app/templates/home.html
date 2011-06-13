@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>HNMood</title>
+    <title>HNMood - HackerNews comment sentimental analisys</title>
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -21,12 +21,16 @@
 
         <h2>About</h2>
         
-        <p>HNMood</p>
+        <p>HNMood is an entry for the <a href="http://www.hnsearch.com/contest">HNSearch API contest</a>, that processes HN comments with the  
+        <a href="http://www.alchemyapi.com/api/sentiment/">AlchemyAPI Sentiment Analisys</a></p>
         
-        <h2>Bookmarklet</h2>
+        <h2>How does it work?</h2>
         <p> Drag the bookmaklet bellow into your browser link bar</p>
         <p><a href="javascript:(function(){_s=document.createElement('SCRIPT');_s.type='text/javascript';_s.src='{{bookmarklet_src}}?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(_s);})();">HN Comment Sentiment Analyzer</a></p>
-
+        <p>Browse to a HackerNews discussion page, for example <a href="http://news.ycombinator.com/item?id=2647219">http://news.ycombinator.com/item?id=2647219</a>
+         with comments and press the bookmarklet</p>
+        
+        
         <h3>Screenshot</h3>
         <p><img src="/static/img/screenshot.png" width="712" height="697"></p>
         
