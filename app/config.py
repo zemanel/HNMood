@@ -14,12 +14,6 @@ config = {
     'tipfy' : {}
 }
 
-port = os.environ['SERVER_PORT']
-if port and port != '80':
-    config['tipfy']['server_name'] = '%s:%s' % (os.environ['SERVER_NAME'], port)
-else:
-    config['tipfy']['server_name'] = os.environ['SERVER_NAME']
-
 config['mood.alchemyapi'] = {
     'API_KEY': ALCHEMY_API_KEY,
 }

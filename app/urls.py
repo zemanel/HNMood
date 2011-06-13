@@ -4,6 +4,7 @@ from tipfy.routing import Rule
 
 rules = [
   Rule('/', name='home', handler='mood.handlers.HomePage'),
+  
   Rule('/js/bookmarklet.js', name='bookmarklet-js', handler='mood.handlers.BookmarkletPage'),
   Rule('/item/<int:itemid>', name='newsitem-detail', handler='mood.handlers.NewsItemDetail'),
 

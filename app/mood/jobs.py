@@ -30,16 +30,16 @@ class QueueHNSearchJob(RequestHandler):
         hits = 1000
         logger.warn("Number of hits is over limit. Trimming to 1000")
       for start in xrange(0, hits, limit):
-        taskname = "poll-hnsearch-%s-%s" % (created_from, created_to)
+        #taskname = "poll-hnsearch-%s-%s" % (created_from, created_to)
         params = {
           'created_from' : created_from,
           'created_to' : created_to,
           'start' : start,
           'limit' : limit,
         }
-        task = taskqueue.Task(params=params, name=taskname, method="GET", url="/tasks/poll_hnsearch")
+        task = taskqueue.Task(params=params, method="GET", url="/tasks/poll_hnsearch")
         queue.add(task)
-        logging.info("Created task %s" % taskname)
+        logging.info("Created task %s" % task.name)
     except Exception, e:
       logger.exception(e)
       self.abort(500)
