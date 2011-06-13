@@ -29,7 +29,7 @@ class NewsItem(db.Model):
   username = db.StringProperty()
   parent_id = db.IntegerProperty() # parent_id - The parent item's id
 
-  #sentimental analisys
+  #sentimental analysis
   is_sentiment_processed = db.BooleanProperty(default=False)
   is_sentiment_queued = db.BooleanProperty(default=False)
   sentiment_type = db.StringProperty()

@@ -48,14 +48,14 @@ class QueueHNSearchJob(RequestHandler):
 
 class QueueAlchemyTasksJob(RequestHandler):
   def get(self):
-    '''Fills a GAP task queue with items sentiment analisys
+    '''Fills a GAP task queue with items sentiment analysis
     '''
     queue = taskqueue.Queue(name='alchemyapi')
     items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).filter("is_sentiment_queued", False).order('-create_ts').fetch(limit=100)
     for key in items:
       keyname = key.name()
-      # queue sentiment analisys task
-      taskname = "sentimental-analisys-%s" % keyname
+      # queue sentiment analysis task
+      taskname = "sentimental-analysis-%s" % keyname
       task = taskqueue.Task(params={'itemid':keyname}, name=taskname, method="GET", url="/tasks/poll_alchemyapi")
       queue.add(task)
       logger.info("Created task %s" % taskname)

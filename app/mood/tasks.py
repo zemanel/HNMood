@@ -51,7 +51,7 @@ class PollHNSearchTask(RequestHandler):
         logger.info("NewsItem %s already exists" % keyname)
 
 class PollAlchemyTask(RequestHandler):
-  '''Poll Alchemy API Sentimental Analisys for processing a news comment item
+  '''Poll Alchemy API Sentimental analysis for processing a news comment item
   '''
   def get(self):
     apikey = self.app.config['mood.alchemyapi']['API_KEY']
