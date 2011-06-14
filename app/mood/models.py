@@ -21,7 +21,7 @@ cache_ts - When the item was last cached
 
 """
 class NewsItem(db.Model):
-    itemid = db.IntegerProperty() # migrate
+    itemid = db.IntegerProperty()
     text = db.TextProperty()
     create_ts = db.DateTimeProperty()
     type = db.StringProperty()
@@ -30,11 +30,14 @@ class NewsItem(db.Model):
     
     #sentimental analysis
     is_sentiment_processed = db.BooleanProperty(default=False)
-    is_sentiment_queued = db.BooleanProperty(default=False) # migrate
+    is_sentiment_queued = db.BooleanProperty(default=False)
     sentiment_type = db.StringProperty()
     sentiment_score = db.FloatProperty()
-    sentiment_status = db.StringProperty() # None | OK | ERROR ;migrate
+    sentiment_status = db.StringProperty() # None | OK | ERROR
     sentiment_status_info = db.StringProperty() # migrate
+    
+    #schema version
+    schema_version = db.IntegerProperty(default=1) 
     
     #points = db.IntegerProperty()
     #parent_id: will use parent of db model instance

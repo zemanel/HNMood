@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 from django.utils import simplejson as json
+from google.appengine.api import memcache
 
 from tipfy.app import Response
 from tipfy.handler import RequestHandler
@@ -37,7 +38,6 @@ class NewsItemDetail(RequestHandler, Jinja2Mixin):
             'sentiment_score': newsitem.sentiment_score,
             'sentiment_status': newsitem.sentiment_status,
             'sentiment_status_info': newsitem.sentiment_status_info,
-            '':'',
         }, indent=2)
         if jsoncallback is None:
             return Response(json_response)

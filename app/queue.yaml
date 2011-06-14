@@ -1,9 +1,9 @@
 queue:
 - name: default
-  rate: 5/s
+  rate: 100/s
 
 - name: hnsearchapi
-  rate: 1/m
+  rate: 5/m
   
 - name: alchemyapi
   rate: 30000/d

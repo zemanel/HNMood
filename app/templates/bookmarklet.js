@@ -24,11 +24,11 @@
                 } else if (newsitem.sentiment_type==='neutral') {
                     color = 'gray';
                 }
-                newDomNode.innerHTML = '| <span style="color:'+color+';"> Sentiment score:'+newsitem.sentiment_score+' ('+newsitem.sentiment_type+') </span>';
+                newDomNode.innerHTML = '| <span style="color:'+color+';"> Sentiment analysis score:'+newsitem.sentiment_score+' ('+newsitem.sentiment_type+') </span>';
                 dojo.place(newDomNode, linkNode, 'after');
             } else if ('ERROR'===newsitem.sentiment_status){
                 color = 'orange';
-                newDomNode.innerHTML = '| <span style="color:'+color+';">'+newsitem.sentiment_status_info+'</span>';
+                newDomNode.innerHTML = '| <span style="color:'+color+';">Sentiment analysis error: '+newsitem.sentiment_status_info+'</span>';
                 dojo.place(newDomNode, linkNode, 'after');
             }
         }

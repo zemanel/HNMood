@@ -70,3 +70,10 @@ class QueueAlchemyTasksJob(RequestHandler):
             newsitem.is_sentiment_queued = True
             newsitem.put()
         return Response('OK', status=200)
+        
+        
+class SchemaMigration(RequestHandler):
+    def get(self):
+        '''Fills a GAP task queue with items sentiment analysis
+        '''
+        queue = taskqueue.Queue(name='default')
