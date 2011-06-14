@@ -1,6 +1,6 @@
 queue:
 - name: default
-  rate: 100/s
+  rate: 10/s
 
 - name: hnsearchapi
   rate: 5/m

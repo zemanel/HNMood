@@ -20,11 +20,9 @@ class QueueHNSearchJob(RequestHandler):
         api = HNSearchAPI()
         limit=100
         try:
-            #created_from = 'NOW-35MINUTES'
-            #created_to = 'NOW'
-            now_rfc = rfc3339.rfc3339(datetime.datetime.now(), utc=True)
-            created_from = "%s-12MINUTES" % now_rfc
-            #created_from = "%s-20MINUTES" % now_rfc
+            now = datetime.datetime.now()
+            now_rfc = rfc3339.rfc3339(now, utc=True)
+            created_from = "%s-10MINUTES" % now_rfc
             created_to = now_rfc
             logging.info("Polling HNSearchAPI from %s to %s " % (created_from, created_to))
             result = api.search(created_from=created_from, created_to=created_to, start=0, limit=0)
