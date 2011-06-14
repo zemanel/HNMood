@@ -21,24 +21,25 @@ cache_ts - When the item was last cached
 
 """
 class NewsItem(db.Model):
-  #id: will use key of db model
-
-  text = db.TextProperty()
-  create_ts = db.DateTimeProperty()
-  type = db.StringProperty()
-  username = db.StringProperty()
-  parent_id = db.IntegerProperty() # parent_id - The parent item's id
-
-  #sentimental analysis
-  is_sentiment_processed = db.BooleanProperty(default=False)
-  is_sentiment_queued = db.BooleanProperty(default=False)
-  sentiment_type = db.StringProperty()
-  sentiment_score = db.FloatProperty()
-
-  #points = db.IntegerProperty()
-  #parent_id: will use parent of db model instance
-  #url = db.LinkProperty()
-  #domain = db.StringProperty()
-  #title = db.StringProperty()
-  #num_comments = db.IntegerProperty()
-  #created_on = db.DateTimeProperty()
+    itemid = db.IntegerProperty() # migrate
+    text = db.TextProperty()
+    create_ts = db.DateTimeProperty()
+    type = db.StringProperty()
+    username = db.StringProperty()
+    parent_id = db.IntegerProperty() # parent_id - The parent item's id
+    
+    #sentimental analysis
+    is_sentiment_processed = db.BooleanProperty(default=False)
+    is_sentiment_queued = db.BooleanProperty(default=False) # migrate
+    sentiment_type = db.StringProperty()
+    sentiment_score = db.FloatProperty()
+    sentiment_status = db.StringProperty() # None | OK | ERROR ;migrate
+    sentiment_status_info = db.StringProperty() # migrate
+    
+    #points = db.IntegerProperty()
+    #parent_id: will use parent of db model instance
+    #url = db.LinkProperty()
+    #domain = db.StringProperty()
+    #title = db.StringProperty()
+    #num_comments = db.IntegerProperty()
+    #created_on = db.DateTimeProperty()
