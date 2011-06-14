@@ -75,7 +75,7 @@ class PollAlchemyTask(RequestHandler):
                     newsitem.is_sentiment_queued = False
                     newsitem.put()
                     logger.info("Successfully analyzed item %s" % itemid)
-                elif 'ERROR'== content['status']:
+                elif 'ERROR' == content['status']:
                     if 'unsupported-text-language' == content['statusInfo'] or 'content-exceeds-size-limit' == content['statusInfo']:
                         newsitem.sentiment_status = 'ERROR'
                         newsitem.sentiment_status_info = content['statusInfo']

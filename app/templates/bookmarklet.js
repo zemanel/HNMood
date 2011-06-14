@@ -12,7 +12,6 @@
     loadDojo();
 
     function getCommentAnalisysCallback(linkNode, newsitem) {
-        //console.log(linkNode, newsitem);
         if (newsitem.is_sentiment_processed===true) {
             var newDomNode = document.createElement('SPAN');
             var color = null;
@@ -26,11 +25,12 @@
                     color = 'gray';
                 }
                 newDomNode.innerHTML = '| <span style="color:'+color+';"> Sentiment score:'+newsitem.sentiment_score+' ('+newsitem.sentiment_type+') </span>';
-            } else {
+                dojo.place(newDomNode, linkNode, 'after');
+            } else if ('ERROR'===newsitem.sentiment_status){
                 color = 'orange';
                 newDomNode.innerHTML = '| <span style="color:'+color+';">'+newsitem.sentiment_status_info+'</span>';
+                dojo.place(newDomNode, linkNode, 'after');
             }
-            dojo.place(newDomNode, linkNode, 'after');      
         }
     }
 
@@ -53,7 +53,9 @@
                                 callbackParamName: "jsoncallback",
                                 load: dojo.partial(getCommentAnalisysCallback, linkNode),
                                 error: function(error) {
-                                    console.error(error);
+                                    if (window.console) {
+                                        console.error(error);    
+                                    }
                                 }
                         }
                         dojo.io.script.get(xhrArgs);

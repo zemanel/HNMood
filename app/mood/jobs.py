@@ -23,7 +23,7 @@ class QueueHNSearchJob(RequestHandler):
             #created_from = 'NOW-35MINUTES'
             #created_to = 'NOW'
             now_rfc = rfc3339.rfc3339(datetime.datetime.now(), utc=True)
-            created_from = "%s-31MINUTES" % now_rfc
+            created_from = "%s-12MINUTES" % now_rfc
             #created_from = "%s-20MINUTES" % now_rfc
             created_to = now_rfc
             logging.info("Polling HNSearchAPI from %s to %s " % (created_from, created_to))
@@ -56,7 +56,8 @@ class QueueAlchemyTasksJob(RequestHandler):
         '''Fills a GAP task queue with items sentiment analysis
         '''
         queue = taskqueue.Queue(name='alchemyapi')
-        items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).filter("is_sentiment_queued", False).order('-create_ts').fetch(limit=100)
+        #items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).filter("is_sentiment_queued", False).order('-create_ts').fetch(limit=100)
+        items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).order('-create_ts').fetch(limit=100)
         for key in items:
             keyname = key.name()
             # queue sentiment analysis task

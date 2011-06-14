@@ -2,9 +2,9 @@ cron:
   - description: Poll HNSearch
     url: /jobs/queue_hnsearch_tasks
     timezone: Europe/Lisbon
-    schedule: every 30 minutes synchronized
+    schedule: every 5 minutes synchronized
     
   - description: Queue AlchemyAPI analysis requests as tasks
     url: /jobs/queue_alchemyapi_tasks
     timezone: Europe/Lisbon
-    schedule: every 10 minutes synchronized
+    schedule: every 1 minutes synchronized
