@@ -24,7 +24,13 @@ error_handlers:
   file: templates/error_handlers/timeout.html
 
 handlers:
-    
+
+- url: /admin/.*
+  script: $PYTHON_LIB/google/appengine/ext/admin
+  login: admin
+
+
+
 - url: /jobs/.*
   script: main.py
   login: admin
@@ -51,3 +57,16 @@ handlers:
 
 - url: /.*
   script: main.py
+
+admin_console:
+  pages:
+    - name: Console
+      url: /admin/interactive
+    - name: Memcache
+      url: /admin/memcache
+    - name: XMPP
+      url: /admin/xmpp
+    - name: Inbound Mail
+      url: /admin/inboundmail
+
+  

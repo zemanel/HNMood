@@ -38,6 +38,7 @@ class NewsItem(db.Model):
     
     #schema version
     schema_version = db.IntegerProperty(default=1) 
+    created_on = db.DateTimeProperty(auto_now_add=True)
     
     #points = db.IntegerProperty()
     #parent_id: will use parent of db model instance

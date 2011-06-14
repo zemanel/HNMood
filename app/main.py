@@ -6,8 +6,6 @@ from tipfy.app import App
 from config import config
 from urls import rules
 
-
-
 def enable_appstats(app):
     """Enables appstats middleware."""
     from google.appengine.ext.appstats.recording import \
@@ -26,7 +24,7 @@ debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
 # Instantiate the application.
 app = App(rules=rules, config=config, debug=debug)
-#enable_appstats(app)
+enable_appstats(app)
 enable_jinja2_debugging()
 
 def main():

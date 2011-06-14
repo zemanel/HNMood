@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """App configuration."""
 import os
+DEVEL = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
 # fill in local_settings.py
 ALCHEMY_API_KEY = None
@@ -14,6 +15,7 @@ config = {
     'tipfy' : {}
 }
 
-config['mood.alchemyapi'] = {
-    'API_KEY': ALCHEMY_API_KEY,
+config['mood'] = {
+    'CACHE_ENABLED': not DEVEL,
+    'ALCHEMYAPI_KEY': ALCHEMY_API_KEY,
 }

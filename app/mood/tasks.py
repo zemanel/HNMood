@@ -55,7 +55,7 @@ class PollAlchemyTask(RequestHandler):
     '''Poll Alchemy API Sentimental analysis for processing a news comment item
     '''
     def get(self):
-        apikey = self.app.config['mood.alchemyapi']['API_KEY']
+        apikey = self.app.config['mood']['ALCHEMYAPI_KEY']
         itemid = self.request.args.get('itemid', None)
         newsitem = NewsItem.get_by_key_name(itemid)
         if newsitem is not None:

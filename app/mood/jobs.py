@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
-import rfc3339
 import datetime
+import rfc3339
+
 from django.utils import simplejson as json
 from tipfy.app import Response
 from tipfy.handler import RequestHandler
@@ -20,10 +21,9 @@ class QueueHNSearchJob(RequestHandler):
         api = HNSearchAPI()
         limit=100
         try:
-            now = datetime.datetime.now()
-            now_rfc = rfc3339.rfc3339(now, utc=True)
-            created_from = "%s-10MINUTES" % now_rfc
-            created_to = now_rfc
+            created_from = "NOW-20MINUTES"
+            created_to = "NOW"
+            
             logging.info("Polling HNSearchAPI from %s to %s " % (created_from, created_to))
             result = api.search(created_from=created_from, created_to=created_to, start=0, limit=0)
             content = json.loads(result, encoding="utf-8")
@@ -48,14 +48,51 @@ class QueueHNSearchJob(RequestHandler):
             self.abort(500)
         return Response('OK', status=200)
 
+#class QueueHNSearchYesterdayJob(RequestHandler):
+#    def get(self):
+#        '''Poll HNSearch API for news comments
+#        '''
+#        queue = taskqueue.Queue(name='hnsearchapi')
+#        api = HNSearchAPI()
+#        limit=100
+#        try:
+#            now = datetime.datetime.now()
+#            now_rfc = rfc3339.rfc3339(now, utc=True)
+#            created_from = "%s-10MINUTES" % now_rfc
+#            created_to = now_rfc
+#            
+#            logging.info("Polling HNSearchAPI from %s to %s " % (created_from, created_to))
+#            result = api.search(created_from=created_from, created_to=created_to, start=0, limit=0)
+#            content = json.loads(result, encoding="utf-8")
+#            hits = int(content['hits'])
+#            logger.info("Got %s hnsearch hits" % content['hits'])
+#            if hits > 1000:
+#                hits = 1000
+#                logger.warn("Number of hits is over limit. Trimming to 1000")
+#            for start in xrange(0, hits, limit):
+#                #taskname = "poll-hnsearch-%s-%s" % (created_from, created_to)
+#                params = {
+#                    'created_from' : created_from,
+#                    'created_to' : created_to,
+#                    'start' : start,
+#                    'limit' : limit,
+#                }
+#                task = taskqueue.Task(params=params, method="GET", url="/tasks/poll_hnsearch")
+#                queue.add(task)
+#                logging.info("Created task %s" % task.name)
+#        except Exception, e:
+#            logger.exception(e)
+#            self.abort(500)
+#        return Response('OK', status=200)
+
 
 class QueueAlchemyTasksJob(RequestHandler):
     def get(self):
         '''Fills a GAP task queue with items sentiment analysis
         '''
         queue = taskqueue.Queue(name='alchemyapi')
-        #items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).filter("is_sentiment_queued", False).order('-create_ts').fetch(limit=100)
-        items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).order('-create_ts').fetch(limit=100)
+        items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).filter("is_sentiment_queued", False).order('-create_ts').fetch(limit=100)
+        #items = NewsItem.all(keys_only=True).filter("is_sentiment_processed", False).order('-create_ts').fetch(limit=100)
         for key in items:
             keyname = key.name()
             # queue sentiment analysis task
